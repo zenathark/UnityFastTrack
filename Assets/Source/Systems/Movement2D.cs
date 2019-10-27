@@ -1,4 +1,5 @@
-﻿using Source.Components;
+﻿using System;
+using Source.Components;
 using UnityEngine;
 
 
@@ -9,7 +10,7 @@ namespace Source.Systems
      * object that belongs to the player's pawn, a `Vector2DValue` that represents the 2D axis value of the controller,
      * and a `Vector2DValue` that holds the current player's position.
      */
-    public class Movement2D: MonoBehaviour
+    public class Movement2D : MonoBehaviour
     {
         [SerializeField] private Transform pawnTransform = null;
         [SerializeField] private Vector2DValue axis = null;
@@ -19,15 +20,16 @@ namespace Source.Systems
         {
             Debug.Assert(pawnTransform != null, "A Pawn must be assigned to this object");
             Debug.Assert(axis != null, "A controller 2D Axis must be assigned to this object");
-            Debug.Assert(playerPosition!= null, "A position 2D Axis must be assigned to this object");
+            Debug.Assert(playerPosition != null, "A position 2D Axis must be assigned to this object");
         }
 
         private void Update()
         {
-            pawnTransform.Translate(axis.X,0,axis.Y);
+            pawnTransform.Translate(axis.X, 0, axis.Y);
             var newPosition = pawnTransform.position;
             playerPosition.X = newPosition.x;
             playerPosition.Y = newPosition.z;
         }
+
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Source.Components;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace Source.Systems
 {
@@ -29,7 +30,7 @@ namespace Source.Systems
             Debug.Assert(dampening != null, "A FloatValue for speed must be assigned to this object");
             Debug.Assert(axisName != null, "The name of the axis must be set");
             axis.value = 0;
-            if (Mathf.Abs(speed - 0.0001f) <= 0) speed.value = 1f;
+            if (Mathf.Abs(speed ) <= 0.001f) speed.value = 1f;
         }
 
         private void Update()
