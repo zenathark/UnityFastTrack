@@ -126,7 +126,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-29468
+  m_Name: pb_Mesh13772
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1396,7 +1396,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-31888
+  m_Name: pb_Mesh13814
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2106,8 +2106,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ca67fc35e2b46b4698d8f3ec1e807d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controller: {fileID: 11400000, guid: f47197fae089b6147a71d8c50cb91565, type: 2}
+  axis: {fileID: 11400000, guid: 3730a8c6b09b2cc4099cdda2103130ac, type: 2}
   speed: {fileID: 11400000, guid: 03a94377ca56a294e9a2bff483eab7b3, type: 2}
+  dampening: {fileID: 11400000, guid: ad90f47e0d069ac46adecff52c2bfdd4, type: 2}
   xAxisName: Horizontal
   yAxisName: Vertical
 --- !u!114 &1428997465
@@ -2122,8 +2123,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d37b67b15eca4a38b095a52570bc80b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pawnTransform: {fileID: 398770277}
-  controller: {fileID: 11400000, guid: f47197fae089b6147a71d8c50cb91565, type: 2}
+  pawnTransform: {fileID: 1214946232}
+  axis: {fileID: 11400000, guid: 3730a8c6b09b2cc4099cdda2103130ac, type: 2}
   playerPosition: {fileID: 11400000, guid: bfa898431bebb8240a4f5514e2dfb773, type: 2}
 --- !u!1 &1725044920
 GameObject:
