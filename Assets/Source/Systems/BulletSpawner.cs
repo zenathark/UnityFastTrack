@@ -12,18 +12,43 @@ namespace Source.Systems
             public bool Active;
             public Vector2 Direction;
             public GameObject Model;
+            public Vector3 InitialPosition;
+
+            public BulletData(GameObject model)
+            {
+                Model = Instantiate(model, Vector3.zero, Quaternion.identity);
+                Despawn();
+            }
+
+            public void Despawn()
+            {
+                Active = false;
+                Model.SetActive(false);
+                Direction = Vector2.zero;
+                InitialPosition = Vector2.zero;
+            }
+
+            public void Spawn(Vector3 init, Vector3 direction)
+            {
+                Active = true;
+                Model.transform.position = init;
+                Model.SetActive(true);
+                Direction = new Vector2(direction.x, direction.z);
+                InitialPosition = init;
+            }
+
+            public float TraveledDistance() => Vector3.Distance(InitialPosition, Model.transform.position);
         }
         // Start is called before the first frame update
         [SerializeField] private bool hidePivot = true;
         [SerializeField] private bool hideInitialPosition = true;
         [SerializeField] private GameObject bulletModel = null;
         [SerializeField] private int bulletCount = 3;
-        [SerializeField] private MeshRenderer pivot = null;
-        [SerializeField] private MeshRenderer initialPosition = null;
+        [SerializeField] private GameObject pivot = null;
+        [SerializeField] private GameObject initialPosition = null;
         [SerializeField] private float speed = 1;
-        [SerializeField] private Vector2 bulletDirection = Vector2.right;
         [SerializeField] private float despawnRadius = 5;
-        [SerializeField] private float bulletTimeInterval = 100;
+        [SerializeField] private float bulletTimeInterval = 0.3f;
 
         private int _bulletIdx;
         private BulletData[] _bullets;
@@ -31,20 +56,14 @@ namespace Source.Systems
 
         private void Start()
         {
-            if (pivot != null && hidePivot) pivot.enabled = false;
-            if (initialPosition != null && hideInitialPosition) initialPosition.enabled = false;
+            if (pivot != null && hidePivot) pivot.GetComponent<MeshRenderer>().enabled = false;
+            if (initialPosition != null && hideInitialPosition) 
+                initialPosition.GetComponent<MeshRenderer>().enabled = false;
         
             _bullets = new BulletData[bulletCount];
             _bulletIdx = 0;
         
-            for (var i = 0; i < bulletCount; i++)
-            {
-                _bullets[i] = new BulletData();
-                _bullets[i].Active = false;
-                _bullets[i].Model = Instantiate(bulletModel, Vector3.zero, Quaternion.identity);
-                _bullets[i].Model.SetActive(false);
-                _bullets[i].Direction = bulletDirection;
-            }
+            for (var i = 0; i < bulletCount; i++) _bullets[i] = new BulletData(bulletModel);
 
             _timeFromLastShoot = bulletTimeInterval;
         }
@@ -66,6 +85,7 @@ namespace Source.Systems
                 SpawnBullet(_bullets[idx]);
                 _bulletIdx = idx;
                 _timeFromLastShoot = 0;
+                break;
             }
         }
 
@@ -88,23 +108,14 @@ namespace Source.Systems
 
         private void OutOfRange(BulletData bullet)
         {
-            var distance = Vector3.Distance(transform.position, bullet.Model.transform.position);
-            if (distance > despawnRadius) DespawnBullet(bullet);
-        }
-
-        private void DespawnBullet(BulletData bullet)
-        {
-            bullet.Active = false;
-            bullet.Model.transform.localPosition = Vector3.zero;
-            bullet.Model.SetActive(false);
+            if (bullet.TraveledDistance() > despawnRadius) bullet.Despawn();
         }
 
         private void SpawnBullet(BulletData bullet)
         {
-            bullet.Active = true;
-            bullet.Model.transform.position = initialPosition.transform.position;
-            bullet.Model.SetActive(true);
-            bullet.Direction = transform.rotation.eulerAngles * bulletDirection;
+            var init = initialPosition.transform.position;
+            var direction = (init - pivot.transform.position).normalized;
+            bullet.Spawn(init, direction);
         }
     }
 }
